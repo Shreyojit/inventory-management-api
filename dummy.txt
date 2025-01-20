@@ -8,4 +8,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
- 
+shreyojitdas95
+Ji6VnjFJfaolSgCy
+
+npx prisma db push
+npx prisma studio
