@@ -3,19 +3,43 @@ import { Request, Response } from "express";
 
 export const createCustomer = async (req: Request, res: Response) => {
   try {
-    const { email, name, phone } = req.body;
+    const {
+      customerType,
+      firstName,
+      lastName,
+      phone,
+      gender,
+      maxCreditLimit,
+      maxCreditDays,
+      taxPin,
+      dob,
+      email,
+      nationalID,
+      country,
+      location,
+    } = req.body;
 
     // Input validation
-    if (!email || !name || !phone) {
-      return res.status(400).json({ message: "Email, name, and phone are required." });
+    if (!customerType || !firstName || !lastName || !phone || !gender || !maxCreditLimit || !maxCreditDays || !country || !location) {
+      return res.status(400).json({ message: "All required fields must be provided." });
     }
 
     // Create new customer
     const customer = await db.customer.create({
       data: {
-        email,
-        name,
+        customerType,
+        firstName,
+        lastName,
         phone,
+        gender,
+        maxCreditLimit,
+        maxCreditDays,
+        taxPin,
+        dob: dob ? new Date(dob) : undefined, // Convert to Date object if provided
+        email,
+        nationalID,
+        country,
+        location,
       },
     });
 
@@ -54,3 +78,4 @@ export const getCustomerById = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to fetch customer." });
   }
 };
+

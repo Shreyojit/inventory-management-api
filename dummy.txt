@@ -13,3 +13,84 @@ Ji6VnjFJfaolSgCy
 
 npx prisma db push
 npx prisma studio
+
+
+
+Restart your typescript server in VSCode CTRL + SHIFT + P then type: restart TS Server
+
+npx prisma generate
+npx prisma migrate dev --name update_customer_model
+
+
+
+generate jwt
+
+import jwt,{JwtPayload} from "jsonwebtoken"
+
+interface SignOption{
+  expiresIn?: string | number;
+}
+
+const DEFAULT_SIGN_OPTION: SignOption = {
+  expiresIn: "6h",
+}
+
+export function generateAccessToken(
+  payload: JwtPayload,
+  options: SignOption = DEFAULT_SIGN_OPTION
+){
+  const secret = process.env.SECRET_KEY;
+  const token = jwt.sign(payload,secret!,options);
+  return token;
+
+}
+
+
+Return access token to the Logged in User
+
+if(isPasswordCorrect){
+  const { password, ...userWithoutPass } = existingUser;
+  const accessToken = generateAccessToken(userWithoutPass);
+
+  const result = {
+    ...userWithoutPass,
+    accessToken,
+  };
+  return res.json(result).status(200);
+}else{
+  return.status(403).json({
+    user:null,
+    error: "Wrong Credentials",
+  });
+}
+
+app.get('/protected',verifyToken,(req,res) => {
+  res.status(200).json({message:"Welcome to protected page!",user:req.user})
+});
+
+
+Middleware to verify the token
+
+const express = require('express')
+const jwt = require('')
+const app = express();
+
+const secretKey = 'secret32123';
+
+function verifyToken(req,res,next){
+  const token = req.headers['authorization'];
+
+  if(!token) return res.status(403).json({ message: 'No token provided!'});
+  }
+
+  const tokenWithoutBearer = token.replace(''Bearer', '');
+
+  jwt.verify(tokenWithoutBearer, secretKey, (err,decoded) => {
+    if(err){
+      return res.status(401).json({ message: 'Failed to authenticated token!' });
+
+    }
+
+    req.user = decoded;
+    next();
+  })

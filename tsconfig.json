@@ -14,11 +14,12 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "types": ["node", "@types/express"]
+    
+    "types": ["node"],
+    "typeRoots": ["./node_modules/@types","./src/types/index.d.ts"],
+    
   },
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src", "express.d.ts"],
   "exclude": [
     "node_modules"
   ]

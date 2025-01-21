@@ -7,15 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  email     String   @unique
-  name      String
-  phone     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 model User {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   email      String   @unique
@@ -44,6 +35,57 @@ model Shop {
   attendent String[]
 }
 
+model Customer {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  customerType   CustomerType
+  firstName      String
+  lastName       String
+  phone          String       @unique
+  gender         Gender
+  maxCreditLimit Float
+  maxCreditDays  Int
+  taxPin         String?
+  dob            DateTime?
+  email          String?       @unique
+  nationalID     String?       @unique
+  country        String
+  location       String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model Supplier {
+  id                 String        @id @default(auto()) @map("_id") @db.ObjectId
+  supplierType       SupplierType
+  name               String
+  contactPerson      String
+  phone              String        @unique
+  email              String?       @unique // Optional and unique
+  location           String
+  country            String
+  website            String?       // Optional
+  taxPin             String?       // Optional
+  registrationNumber String?       @unique // Optional and unique
+  bankAccountNumber  String?       // Optional
+  bankName           String?       // Optional
+  paymentTerms       String?       // Optional
+  logo               String?       // Optional
+  rating             Float?        // Optional
+  notes              String?       // Optional
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+}
+
+enum SupplierType {
+  MANUFACTURER
+  DISTRIBUTOR
+  WHOLESELLER
+  RETAILER
+  OTHER
+}
+
+
+
 enum Role {
   ADMIN
   ATTENDENT
@@ -53,3 +95,13 @@ enum Gender {
   MALE
   FEMALE
 }
+
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+  OTHER
+}
+
+
